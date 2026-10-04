@@ -16,20 +16,28 @@ Deploys on Vercel with zero config — framework preset **Next.js**, no env vars
 
 ## Sections
 
+Mirrors the Agenki template home page, section for section, rebuilt in React
+(no template code or demo images are used — the template is a paid ThemeForest item).
+
 | Section | Effect |
 | --- | --- |
-| Preloader | Camera-iris SVG aperture + counter, curtain wipe |
-| Hero | three.js particle "lens" (custom shader) — rings rotate, mouse repels particles, scroll explodes it into a splash; split-text title, rotating badge |
-| Marquees | Infinite, speed reacts to scroll velocity |
-| About | Scroll-scrubbed word highlight, clip-path image reveal, parallax splash |
-| Services | Hover rows with a floating image that follows the cursor |
-| Selected work | Pinned horizontal scroll with per-panel parallax (native swipe on mobile) |
-| Showreel | Scroll-scaled card, magnetic play button |
-| Gallery | WebGL 3D carousel — drag / scroll to spin, RGB-shift on velocity, category filters, click → lightbox |
-| Process | 3D tilt cards with pointer spotlight |
-| Contact | Magnetic headline, contact cards, enquiry form (opens the visitor's mail app) |
+| Preloader | Letter wave + camera-aperture + live % counter, then the curved SVG curtain lifts away |
+| Header / offcanvas | Rolling-text menu, active-section highlight, hide-on-scroll, slide-in sidebar |
+| Banner | Huge split-char title over Chirag's photo (clip reveal), stats card, spinning "About me" badge |
+| About | Char-by-char titles, live three.js chrome ball, count-up, tools grid |
+| Video area | Parallax background, scroll-lit headline, spinning showreel button |
+| Services | three.js chrome rings, notched cards with lime fill on hover |
+| Marquee | Filled / outlined words, reacts to scroll speed & direction |
+| Portfolio | Sticky stacked cards that shrink and dim as the next slides over |
+| Testimonials | Auto-advancing slider *(placeholder quotes — replace)* |
+| Counters + team | Live three.js silk shader background, count-ups, arch portraits |
+| Contact | Lime section, enquiry form → visitor's mail app |
+| Stories | Instagram-linked cards |
+| CTA | "LET'S WORK / TOGETHER" rows drifting in opposite directions |
+| Footer | Newsletter (mailto), services, links, contact, socials, progress-ring back-to-top |
 
-Plus: custom cursor with contextual labels, film grain, scroll progress bar, fullscreen menu, `prefers-reduced-motion` support.
+Buttons use a position-aware hover fill (grows from where the pointer enters).
+Brand accent is the template's lime — change `--main` in `src/app/globals.css` to switch to Chirag's blue `#008ee9`.
 
 ## Editing content
 
@@ -38,12 +46,12 @@ All copy, contact details and image lists live in **`src/lib/content.ts`**.
 ### ⚠️ Replace the placeholder portfolio
 
 The Canva site only contained Chirag's portraits, logo and a splash graphic — no portfolio shots.
-Every entry in `works` marked `placeholder: true` is a royalty-free stand-in from picsum.photos/Unsplash.
+`projects`, `stories`, testimonials and the numbers in `stats` are marked TODO in `src/lib/content.ts` — images are royalty-free stand-ins (picsum.photos/Unsplash), quotes and numbers are placeholders.
 To swap them:
 
 1. Drop real photos into `public/images/work/` (landscape ~1200px wide, `.webp` or `.jpg`).
-2. Update the `works` array in `src/lib/content.ts` (`src`, `title`, `category`) and delete `placeholder: true`.
-3. `featured` (the horizontal strip) picks from `works` by index.
+2. Update `projects` / `stories` in `src/lib/content.ts`.
+3. Confirm `stats` and replace `testimonials` with real ones.
 
 ### Showreel
 

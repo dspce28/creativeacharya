@@ -2,38 +2,44 @@ import SmoothScroll from "@/components/SmoothScroll";
 import Preloader from "@/components/Preloader";
 import Cursor from "@/components/Cursor";
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import Marquee from "@/components/Marquee";
+import Banner from "@/components/Banner";
 import About from "@/components/About";
+import VideoArea from "@/components/VideoArea";
 import Services from "@/components/Services";
-import Showcase from "@/components/Showcase";
-import Reel from "@/components/Reel";
-import Gallery from "@/components/Gallery";
-import Process from "@/components/Process";
+import Marquee from "@/components/Marquee";
+import Portfolio from "@/components/Portfolio";
+import Testimonials from "@/components/Testimonials";
+import CounterTeam from "@/components/CounterTeam";
 import Contact from "@/components/Contact";
+import Stories from "@/components/Stories";
+import Cta from "@/components/Cta";
 import Footer from "@/components/Footer";
+import BackTop from "@/components/BackTop";
+import { marquee } from "@/lib/content";
 
+// Section order mirrors the Agenki template home page.
 export default function Home() {
   return (
     <>
       <SmoothScroll />
       <Preloader />
       <Cursor />
-      <div className="grain" aria-hidden />
       <Header />
       <main>
-        <Hero />
-        <Marquee items={["Photography", "Videography", "Cinematic Portraits", "Brand Shoots", "Reels"]} />
-        <Marquee items={["Creative Design", "Social Media", "Content Strategy", "Storytelling"]} alt reverse />
+        <Banner />
         <About />
+        <VideoArea />
         <Services />
-        <Showcase />
-        <Reel />
-        <Gallery />
-        <Process />
+        <Marquee items={marquee} />
+        <Portfolio />
+        <Testimonials />
+        <CounterTeam />
         <Contact />
+        <Stories />
+        <Cta />
       </main>
       <Footer />
+      <BackTop />
     </>
   );
 }

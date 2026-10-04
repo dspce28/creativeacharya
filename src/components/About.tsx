@@ -1,75 +1,70 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
-import { about } from "@/lib/content";
+import { about, stats } from "@/lib/content";
+import { LongArrow } from "@/lib/icons";
+import Btn from "./Btn";
+import CharTitle from "./CharTitle";
+import Counter from "./Counter";
+
+const Chrome3D = dynamic(() => import("./Chrome3D"), { ssr: false });
 
 export default function About() {
   const root = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // scrubbed word-by-word highlight of the intro
-      gsap.to(".about__lead .word", {
-        opacity: 1,
-        stagger: 0.1,
-        ease: "none",
-        scrollTrigger: { trigger: ".about__lead", start: "top 85%", end: "bottom 45%", scrub: true },
-      });
-      // image parallax + clip reveal
-      gsap.fromTo(
-        ".about__media",
-        { clipPath: "inset(20% 20% 20% 20% round 28px)" },
-        { clipPath: "inset(0% 0% 0% 0% round 28px)", ease: "power2.out", scrollTrigger: { trigger: ".about__media", start: "top 90%", end: "top 30%", scrub: true } }
-      );
-      gsap.fromTo(".about__media > img", { yPercent: -12 }, { yPercent: 0, ease: "none", scrollTrigger: { trigger: ".about__media", start: "top bottom", end: "bottom top", scrub: true } });
-      gsap.fromTo(".about__splash", { rotation: -10, scale: 0.8 }, { rotation: 6, scale: 1.05, ease: "none", scrollTrigger: { trigger: ".about__visual", start: "top bottom", end: "bottom top", scrub: true } });
-      gsap.utils.toArray<HTMLElement>(".about .reveal").forEach((el) =>
-        gsap.to(el, { opacity: 1, y: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 88%" } })
-      );
-      gsap.from(".about .chip", { opacity: 0, y: 20, scale: 0.8, stagger: 0.06, duration: 0.6, ease: "back.out(2)", clearProps: "transform", scrollTrigger: { trigger: ".about .chips", start: "top 90%" } });
+      gsap.fromTo(".about__img img", { yPercent: -15 }, { yPercent: 0, ease: "none", scrollTrigger: { trigger: ".about__img", start: "top bottom", end: "bottom top", scrub: true } });
+      gsap.from(".about__img", { clipPath: "inset(0 0 100% 0 round 14px)", duration: 1.4, ease: "power4.inOut", scrollTrigger: { trigger: ".about__img", start: "top 85%" } });
+      gsap.from(".brand", { y: 40, opacity: 0, stagger: 0.06, duration: 0.8, ease: "power3.out", clearProps: "transform,opacity", scrollTrigger: { trigger: ".brands", start: "top 90%" } });
+      gsap.from(".about .fade-up", { y: 40, opacity: 0, stagger: 0.1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: root.current, start: "top 70%" } });
     }, root);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section className="section about" id="about" ref={root}>
-      <div className="container about__grid">
-        <div className="about__visual">
-          <div className="about__media" data-cursor-label="Hello">
-            <img src="/images/brand/chirag-studio.webp" alt="Portrait of Chirag Acharya in the studio" loading="lazy" />
-            <div className="about__sig">
-              <img src="/images/brand/logo-mark.webp" alt="" />
-            </div>
+    <section className="about py-140" id="about" ref={root}>
+      <div className="container">
+        <div className="about__top">
+          <div className="about__shape">
+            <Chrome3D variant="ball" />
           </div>
-          <img className="about__splash" src="/images/brand/splash.webp" alt="" loading="lazy" />
+          <div>
+            <CharTitle lines={about.title} />
+            <p className="about__desc fade-up">{about.text}</p>
+          </div>
+          <div className="exp fade-up">
+            <img src="/images/brand/chirag-cutout.webp" alt="" />
+            <Counter value={stats.experience.value} suffix={stats.experience.suffix} />
+            <span>
+              {stats.experience.label[0]}
+              <br />
+              {stats.experience.label[1]}
+            </span>
+          </div>
         </div>
 
-        <div className="about__text">
-          <span className="eyebrow reveal">{about.heading}</span>
-          <h2 className="h2 reveal">
-            Turning ideas into <span className="gradient-text">visual magic</span>
-          </h2>
-          <p className="about__lead">
-            {about.intro.split(" ").map((w, i) => (
-              <span className="word" key={i}>
-                {w}{" "}
-              </span>
-            ))}
-          </p>
-          {about.paragraphs.map((p) => (
-            <p className="reveal" key={p.slice(0, 20)}>
-              {p}
-            </p>
-          ))}
-          <p className="about__mission reveal">{about.mission}</p>
-          <div className="chips">
-            {about.skills.map((s) => (
-              <span className="chip" key={s}>
-                {s}
-              </span>
-            ))}
+        <div className="about__mid">
+          <div className="about__img">
+            <img src="/images/brand/chirag-studio.webp" alt="Chirag Acharya at work" loading="lazy" />
           </div>
+          <div>
+            <LongArrow className="about__arrow" />
+            <h3 className="about__lead fade-up">{about.lead}</h3>
+            <div className="fade-up">
+              <Btn href="#services">Explore More</Btn>
+            </div>
+          </div>
+        </div>
+
+        <div className="brands">
+          {about.tools.map((t) => (
+            <div className="brand" key={t}>
+              {t}
+            </div>
+          ))}
         </div>
       </div>
     </section>

@@ -34,12 +34,6 @@ export default function SmoothScroll() {
     };
     document.addEventListener("click", onClick);
 
-    // Top scroll progress bar
-    const bar = document.querySelector<HTMLElement>(".scroll-progress");
-    lenis.on("scroll", ({ progress }: { progress: number }) => {
-      if (bar) bar.style.transform = `scaleX(${progress})`;
-    });
-
     return () => {
       document.removeEventListener("click", onClick);
       gsap.ticker.remove(tick);
@@ -48,5 +42,5 @@ export default function SmoothScroll() {
     };
   }, []);
 
-  return <div className="scroll-progress" aria-hidden />;
+  return null;
 }

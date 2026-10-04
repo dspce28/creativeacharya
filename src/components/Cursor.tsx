@@ -3,62 +3,41 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 
-// Ring + dot cursor. Elements opt in with:
-//   data-cursor="hover"            -> ring grows
-//   data-cursor-label="View"       -> ring fills and shows a label
+// Template-style cursor: lime dot + trailing outlined ring that grows over links.
 export default function Cursor() {
-  const ring = useRef<HTMLDivElement>(null);
-  const dot = useRef<HTMLDivElement>(null);
-  const label = useRef<HTMLSpanElement>(null);
+  const outer = useRef<HTMLDivElement>(null);
+  const inner = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (window.matchMedia("(pointer: coarse)").matches) return;
-    const r = ring.current!;
-    const d = dot.current!;
-    const rx = gsap.quickTo(r, "x", { duration: 0.45, ease: "power3" });
-    const ry = gsap.quickTo(r, "y", { duration: 0.45, ease: "power3" });
-    const dx = gsap.quickTo(d, "x", { duration: 0.08 });
-    const dy = gsap.quickTo(d, "y", { duration: 0.08 });
-
+    const o = outer.current!;
+    const i = inner.current!;
+    const ox = gsap.quickTo(o, "x", { duration: 0.5, ease: "power3" });
+    const oy = gsap.quickTo(o, "y", { duration: 0.5, ease: "power3" });
+    const ix = gsap.quickTo(i, "x", { duration: 0.06 });
+    const iy = gsap.quickTo(i, "y", { duration: 0.06 });
     const move = (e: PointerEvent) => {
-      rx(e.clientX);
-      ry(e.clientY);
-      dx(e.clientX);
-      dy(e.clientY);
+      ox(e.clientX);
+      oy(e.clientY);
+      ix(e.clientX);
+      iy(e.clientY);
     };
     const over = (e: PointerEvent) => {
-      const t = (e.target as HTMLElement).closest<HTMLElement>("[data-cursor-label], a, button, [data-cursor]");
-      r.classList.remove("is-hover", "is-label");
-      if (!t) return;
-      const txt = t.dataset.cursorLabel;
-      if (txt) {
-        label.current!.textContent = txt;
-        r.classList.add("is-label");
-      } else {
-        r.classList.add("is-hover");
-      }
+      const hit = (e.target as HTMLElement).closest("a, button, input, textarea, select, [data-cursor]");
+      o.classList.toggle("is-hover", Boolean(hit));
     };
-    const leave = () => gsap.to([r, d], { opacity: 0, duration: 0.2 });
-    const enter = () => gsap.to([r, d], { opacity: 1, duration: 0.2 });
-
     window.addEventListener("pointermove", move);
     document.addEventListener("pointerover", over);
-    document.documentElement.addEventListener("pointerleave", leave);
-    document.documentElement.addEventListener("pointerenter", enter);
     return () => {
       window.removeEventListener("pointermove", move);
       document.removeEventListener("pointerover", over);
-      document.documentElement.removeEventListener("pointerleave", leave);
-      document.documentElement.removeEventListener("pointerenter", enter);
     };
   }, []);
 
   return (
     <>
-      <div className="cursor" ref={ring} aria-hidden>
-        <span ref={label} />
-      </div>
-      <div className="cursor-dot" ref={dot} aria-hidden />
+      <div className="cursor-outer" ref={outer} aria-hidden />
+      <div className="cursor-inner" ref={inner} aria-hidden />
     </>
   );
 }

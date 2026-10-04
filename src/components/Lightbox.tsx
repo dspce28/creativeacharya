@@ -1,12 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-import type { Work } from "@/lib/content";
 import { site } from "@/lib/content";
 
-type Props = { work?: Work | null; video?: boolean; onClose: () => void };
-
-export default function Lightbox({ work, video, onClose }: Props) {
+// Showreel modal. Rendered only when site.showreelEmbed is set.
+export default function Lightbox({ onClose }: { video?: boolean; onClose: () => void }) {
   useEffect(() => {
     const key = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", key);
@@ -22,23 +20,13 @@ export default function Lightbox({ work, video, onClose }: Props) {
       <button className="lightbox__close" aria-label="Close" onClick={onClose}>
         ✕
       </button>
-      {video ? (
-        <iframe
-          className="lightbox__frame"
-          src={site.showreelEmbed}
-          title="Showreel"
-          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-          onClick={(e) => e.stopPropagation()}
-        />
-      ) : work ? (
-        <figure onClick={(e) => e.stopPropagation()}>
-          <img src={work.src} alt={work.title} />
-          <figcaption>
-            {work.title}
-            <span>{work.category}</span>
-          </figcaption>
-        </figure>
-      ) : null}
+      <iframe
+        className="lightbox__frame"
+        src={site.showreelEmbed}
+        title="Showreel"
+        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+        onClick={(e) => e.stopPropagation()}
+      />
     </div>
   );
 }

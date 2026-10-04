@@ -1,13 +1,13 @@
 // Single source of truth for site copy and media.
-// Copy below is taken from creativeacharya.my.canva.site.
-// Portfolio images marked `placeholder: true` are royalty-free stand-ins
-// (picsum.photos / Unsplash) — replace them with Chirag's own work.
+//
+// Copy marked "from Canva" is Chirag's own text from creativeacharya.my.canva.site.
+// Anything marked TODO is a stand-in that must be confirmed or replaced before
+// the site is shared widely (numbers, testimonials, portfolio images).
 
 export const site = {
   name: "Creative Acharya",
   person: "Chirag Acharya",
   tagline: "Splash of Visual Magic",
-  role: "Photographer · Videographer · Visual Storyteller",
   url: "https://creativeacharya.vercel.app",
   phone: "+91 8485 956 974",
   phoneHref: "tel:+918485956974",
@@ -16,87 +16,136 @@ export const site = {
   instagram: "https://www.instagram.com/creativeacharya/",
   facebook: "https://www.facebook.com/creativeacharya/",
   handle: "@creativeacharya",
-  // Set to a YouTube/Vimeo embed URL to play a showreel in the modal.
-  // Leave empty to send visitors to Instagram reels instead.
+  // Set to a YouTube/Vimeo embed URL to play the showreel in a modal.
+  // While empty, the play button opens Instagram.
   showreelEmbed: "",
 };
 
-export const about = {
-  heading: "Who am I",
-  intro:
-    "Hi, I’m Chirag Acharya — a multidisciplinary creative professional with a passion for turning ideas into powerful visuals and experiences.",
-  paragraphs: [
-    "I work across photography, graphic design and digital content creation, bringing a mix of artistry and strategy into everything I do. I specialize in cinematic and creative storytelling and impactful visuals that connect with people.",
-    "What drives me is the challenge of transforming concepts into experiences — whether it’s capturing emotion through the lens, designing engaging content, or curating an atmosphere with music. I take pride in creating work that’s not just visually appealing, but also deeply connects with audiences.",
+export const nav = [
+  { href: "#top", label: "Home" },
+  { href: "#about", label: "About" },
+  { href: "#services", label: "Services" },
+  { href: "#portfolio", label: "Portfolio" },
+  { href: "#stories", label: "Stories" },
+  { href: "#contact", label: "Contacts" },
+];
+
+// TODO: confirm every number with Chirag before sharing the site.
+export const stats = {
+  projects: { value: 150, suffix: "+", label: ["Completed", "Projects"] },
+  happyClients: 32,
+  experience: { value: 5, suffix: "+", label: ["Years of", "Experience"] },
+  counters: [
+    { value: 5, suffix: "+", label: ["Years of", "Experience"] },
+    { value: 150, suffix: "+", label: ["Projects", "Delivered"] },
+    { value: 1, suffix: "M+", label: ["Views on", "Reels"] },
+    { value: 100, suffix: "%", label: ["Passion in", "Every Frame"] },
   ],
-  mission:
-    "At the heart of everything I do lies a simple goal: to help brands and individuals express their true identity with style, emotion, and authenticity.",
-  skills: ["Cinematic Portraits", "Brand Shoots", "Reels & Edits", "Colour Grading", "Graphic Design", "Social Strategy"],
 };
 
+export const banner = {
+  words: ["CREATIVE", "ACHARYA"],
+  text: "Photographer, videographer & visual storyteller — helping brands and individuals express their true identity with style, emotion, and authenticity.",
+};
+
+export const about = {
+  title: ["About", "Acharya"],
+  // from Canva
+  text: "Hi, I’m Chirag Acharya — a multidisciplinary creative professional with a passion for turning ideas into powerful visuals and experiences. I work across photography, graphic design and digital content creation, bringing a mix of artistry and strategy into everything I do.",
+  // from Canva
+  lead: "I specialize in cinematic and creative storytelling and impactful visuals that connect with people",
+  tools: ["Lightroom", "Photoshop", "Premiere Pro", "After Effects", "DaVinci Resolve", "Illustrator", "Canva", "Final Cut Pro", "CapCut", "Figma"],
+};
+
+export const video = {
+  title: "Capturing emotion through the lens, frame by frame.",
+  image: "/images/brand/editing.webp",
+};
+
+export const servicesIntro = {
+  title: ["What", "I Do"],
+  // from Canva
+  text: "I help brands and individuals tell their stories through visuals, design, and strategy. Here’s how I can bring your vision to life.",
+};
+
+// Titles and descriptions from Canva; bullet points summarise each line.
 export const services = [
   {
-    no: "01",
     title: "Photography & Videography",
     text: "From cinematic portraits to brand shoots, I capture visuals that connect emotionally and look stunning on every platform.",
-    image: "/images/brand/lens.webp",
-    tags: ["Portraits", "Brand shoots", "Events"],
+    points: ["Cinematic portraits", "Brand & product shoots", "Events & films"],
   },
   {
-    no: "02",
     title: "Creative Designing",
-    text: "From branding and social media creatives to custom website design, I create designs that are visually stunning, user-friendly, and aligned with your brand’s identity.",
-    image: "/images/brand/desk.webp",
-    tags: ["Branding", "Creatives", "Web design"],
+    text: "From branding and social media creatives to custom website design — visually stunning, user-friendly and aligned with your identity.",
+    points: ["Logo & brand identity", "Social media creatives", "Website design"],
   },
   {
-    no: "03",
     title: "Social Media Management",
     text: "I create and manage content that grows your presence online — from planning and posting to engagement and analytics.",
-    image: "/images/brand/social.webp",
-    tags: ["Planning", "Posting", "Analytics"],
+    points: ["Content calendars", "Posting & engagement", "Analytics & growth"],
   },
   {
-    no: "04",
     title: "Content Creation & Strategy",
     text: "I craft engaging videos, reels, and visual campaigns designed to grab attention and tell your story effectively.",
-    image: "/images/brand/editing.webp",
-    tags: ["Reels", "Campaigns", "Storytelling"],
+    points: ["Reels & short films", "Visual campaigns", "Storytelling strategy"],
   },
 ];
 
-export type Work = {
-  src: string;
-  title: string;
-  category: "Portrait" | "Cinematic" | "Event" | "Travel" | "Brand";
-  placeholder?: boolean;
-};
+export const marquee = ["Photography", "Videography", "Cinematic", "Design", "Reels", "Branding", "Content"];
 
-export const works: Work[] = [
-  { src: "/images/work/w1027.webp", title: "Quiet Gaze", category: "Portrait", placeholder: true },
-  { src: "/images/work/w453.webp", title: "Stage Lights", category: "Event", placeholder: true },
-  { src: "/images/work/w65.webp", title: "Golden Hour", category: "Cinematic", placeholder: true },
-  { src: "/images/work/w1011.webp", title: "Still Waters", category: "Travel", placeholder: true },
-  { src: "/images/work/w26.webp", title: "Everyday Carry", category: "Brand", placeholder: true },
-  { src: "/images/work/w64.webp", title: "Wildflower", category: "Portrait", placeholder: true },
-  { src: "/images/work/w274.webp", title: "Neon Nights", category: "Cinematic", placeholder: true },
-  { src: "/images/work/w548.webp", title: "Ember", category: "Cinematic", placeholder: true },
-  { src: "/images/work/w342.webp", title: "Street Pulse", category: "Event", placeholder: true },
-  { src: "/images/work/w177.webp", title: "Summit", category: "Travel", placeholder: true },
-  { src: "/images/work/w365.webp", title: "Morning Ritual", category: "Brand", placeholder: true },
-  { src: "/images/work/w399.webp", title: "Afterglow", category: "Portrait", placeholder: true },
-  { src: "/images/work/w1067.webp", title: "City Rise", category: "Travel", placeholder: true },
-  { src: "/images/work/w1035.webp", title: "Rainbow Falls", category: "Cinematic", placeholder: true },
-  { src: "/images/work/w494.webp", title: "Light Well", category: "Cinematic", placeholder: true },
-  { src: "/images/work/w22.webp", title: "Crossing", category: "Event", placeholder: true },
+// TODO: placeholder images (picsum.photos / Unsplash licence) — replace with Chirag's work.
+export const projects = [
+  { title: "Cinematic Portrait Sessions", tags: ["Photography", "Portrait"], image: "/images/work/w1027.webp" },
+  { title: "Live Music & Event Coverage", tags: ["Videography", "Event"], image: "/images/work/w453.webp" },
+  { title: "Golden Hour Brand Story", tags: ["Brand Shoot", "Film"], image: "/images/work/w65.webp" },
+  { title: "Product Shoot for Lifestyle Brand", tags: ["Product", "Design"], image: "/images/work/w26.webp" },
 ];
 
-// Featured strip for the pinned horizontal section.
-export const featured = [works[0], works[2], works[1], works[4], works[6], works[3]];
+// TODO: replace with real client testimonials. Shown as placeholders.
+export const testimonials = {
+  clientsLine: ["Trusted by brands, couples", "and creators alike"],
+  rating: "5.0",
+  ratingLabel: "Client rating",
+  image: "/images/brand/chirag-studio.webp",
+  items: [
+    {
+      quote: "Chirag has an eye for light and emotion. The portraits felt cinematic and completely us — every frame told a story.",
+      name: "Client Name",
+      role: "Portrait Session",
+    },
+    {
+      quote: "From planning the shoot to delivering reels, everything was smooth. Our brand finally looks the way we always imagined.",
+      name: "Client Name",
+      role: "Brand Shoot",
+    },
+    {
+      quote: "Creative, patient and super quick with edits. The content grew our Instagram engagement within weeks.",
+      name: "Client Name",
+      role: "Social Media",
+    },
+  ],
+};
 
-export const process = [
-  { step: "Discover", text: "We talk through your story, audience and the feeling the visuals should leave behind." },
-  { step: "Design", text: "Moodboards, shot lists, locations and looks — every frame planned before the shutter clicks." },
-  { step: "Capture", text: "Cinematic direction on set, so the moments feel natural and the light does the talking." },
-  { step: "Craft", text: "Edit, colour grade and sound — delivered in formats ready for every platform." },
+export const team = {
+  title: ["Meet the", "Creator", "Behind the Lens"],
+  members: [
+    { name: "Chirag Acharya", role: "Photographer", image: "/images/brand/chirag-cutout.webp", cutout: true },
+    { name: "Videography", role: "Films & Reels", image: "/images/brand/lens.webp" },
+    { name: "Design", role: "Brand & Social Creatives", image: "/images/brand/desk.webp" },
+    { name: "Content", role: "Strategy & Editing", image: "/images/brand/editing.webp" },
+  ],
+};
+
+export const contact = {
+  title: ["Contact Me", "For Your Project"],
+  // from Canva
+  text: "Have a project in mind, or just want to say hi? I’m always excited to collaborate on photography, design, or social media projects that bring ideas to life.",
+};
+
+// Instagram-style story cards (no blog yet). TODO: replace images with real posts.
+export const stories = [
+  { image: "/images/work/w64.webp", category: "Portraits", title: "Behind the lens of a cinematic portrait session" },
+  { image: "/images/work/w274.webp", category: "Reels", title: "How I plan reels that stop the scroll" },
+  { image: "/images/work/w365.webp", category: "Brand", title: "Styling a product shoot from moodboard to final frame" },
 ];

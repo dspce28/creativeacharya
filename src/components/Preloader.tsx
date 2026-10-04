@@ -4,8 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "@/lib/gsap";
 import { markReady } from "@/lib/ready";
 
-const BLADES = 8;
+const LETTERS = "Loading".split("");
+const BLADES = 6;
 
+// Template preloader (letter wave + SVG curtain that bends and lifts away),
+// plus a camera-aperture that opens with real load progress.
 export default function Preloader() {
   const root = useRef<HTMLDivElement>(null);
   const [done, setDone] = useState(false);
@@ -16,33 +19,43 @@ export default function Preloader() {
     window.__lenis?.stop();
     window.scrollTo(0, 0);
 
-    const counter = { v: 0 };
-    const tl = gsap.timeline({
-      onComplete: () => {
-        document.body.classList.remove("is-loading");
-        window.__lenis?.start();
-        setDone(true);
-      },
-    });
+    const prog = { v: 0 };
+    const render = () => {
+      count.textContent = `${Math.round(prog.v)}%`;
+      gsap.set(".preloader__bar", { scaleX: prog.v / 100 });
+      gsap.set(".preloader__blade", { x: (prog.v / 100) * 34 });
+    };
 
-    // Aperture opens: blades slide outward while the whole iris turns.
-    tl.fromTo(".preloader__blade", { x: 0 }, { x: 70, duration: 1.8, ease: "power2.inOut" })
-      .fromTo(".preloader__blades", { rotation: 0 }, { rotation: 120, svgOrigin: "0 0", duration: 1.8, ease: "power2.inOut" }, 0)
-      .to(counter, {
-        v: 100,
-        duration: 1.8,
-        ease: "power2.inOut",
-        onUpdate: () => (count.textContent = String(Math.round(counter.v)).padStart(3, "0")),
-      }, 0)
-      .to(".preloader__iris", { scale: 18, opacity: 0, duration: 0.9, ease: "power3.in" })
-      .to(".preloader__curtain", { scaleY: 1, duration: 0.6, ease: "power3.inOut" }, "-=0.5")
-      .set(".preloader__count, .preloader__name", { opacity: 0 })
-      .add(() => markReady())
-      .to(".preloader__curtain", { scaleY: 0, transformOrigin: "top", duration: 0.7, ease: "power3.inOut" })
-      .to(el, { autoAlpha: 0, duration: 0.01 });
+    // Climb to 85% quickly, then wait for window load (images/fonts) to finish.
+    const climb = gsap.to(prog, { v: 85, duration: 1.6, ease: "power2.out", onUpdate: render });
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      climb.kill();
+      gsap
+        .timeline({
+          onComplete: () => {
+            document.body.classList.remove("is-loading");
+            window.__lenis?.start();
+            setDone(true);
+          },
+        })
+        .to(prog, { v: 100, duration: 0.5, ease: "power1.inOut", onUpdate: render })
+        .to(".preloader__inner, .preloader__count", { opacity: 0, y: -40, duration: 0.5, ease: "power2.in" })
+        .to("#preloaderSvg", { attr: { d: "M0,502S175,272,500,272s500,230,500,230V0H0Z" }, duration: 0.8, ease: "power4.in" }, "-=0.1")
+        .add(() => markReady())
+        .to("#preloaderSvg", { attr: { d: "M0,2S175,1,500,1s500,1,500,1V0H0Z" }, duration: 0.8, ease: "power4.out" })
+        .to(el, { autoAlpha: 0, duration: 0.01 });
+    };
+    const minTime = new Promise((r) => setTimeout(r, 1700));
+    const loaded = new Promise((r) => (document.readyState === "complete" ? r(null) : window.addEventListener("load", () => r(null), { once: true })));
+    Promise.all([minTime, loaded]).then(finish);
+    const failsafe = setTimeout(finish, 6000);
 
     return () => {
-      tl.kill();
+      clearTimeout(failsafe);
+      climb.kill();
     };
   }, []);
 
@@ -50,34 +63,38 @@ export default function Preloader() {
 
   return (
     <div className="preloader" ref={root} aria-hidden>
-      <div className="preloader__iris">
-        <svg viewBox="-100 -100 200 200">
-          <defs>
-            <clipPath id="iris-clip">
-              <circle r="92" />
-            </clipPath>
-          </defs>
-          <circle r="96" fill="none" stroke="#008ee9" strokeWidth="2" />
-          <g clipPath="url(#iris-clip)">
-            <g className="preloader__blades">
+      <svg className="curtain" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+        <path id="preloaderSvg" d="M0,1005S175,995,500,995s500,5,500,5V0H0Z" />
+      </svg>
+      <div className="preloader__inner">
+        <div className="preloader__aperture">
+          <svg viewBox="-50 -50 100 100">
+            <defs>
+              <clipPath id="ap-clip">
+                <circle r="44" />
+              </clipPath>
+            </defs>
+            <circle r="47" fill="none" stroke="#b3e151" strokeWidth="2" />
+            <g clipPath="url(#ap-clip)">
               {Array.from({ length: BLADES }).map((_, i) => (
                 <g key={i} transform={`rotate(${i * (360 / BLADES)})`}>
-                  <path
-                    className="preloader__blade"
-                    d="M-6 0 L118 -55 L118 55 Z"
-                    fill={i % 2 ? "#12141f" : "#1a1d2b"}
-                    stroke="#008ee9"
-                    strokeWidth="0.6"
-                  />
+                  <path className="preloader__blade" d="M-4 0 L60 -40 L60 30 Z" fill={i % 2 ? "#1d1d1d" : "#262626"} stroke="#b3e151" strokeWidth="0.6" />
                 </g>
               ))}
             </g>
-          </g>
-        </svg>
+          </svg>
+        </div>
+        <div className="load-text">
+          {LETTERS.map((l, i) => (
+            <span key={i} style={{ animationDelay: `${i * 0.12}s` }}>
+              {l}
+            </span>
+          ))}
+        </div>
+        <div className="preloader__brand">Creative Acharya</div>
       </div>
-      <div className="preloader__name">Creative Acharya — Loading visuals</div>
-      <div className="preloader__count">000</div>
-      <div className="preloader__curtain" />
+      <div className="preloader__count">0%</div>
+      <div className="preloader__bar" />
     </div>
   );
 }
