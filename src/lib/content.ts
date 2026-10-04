@@ -58,7 +58,7 @@ export const about = {
 };
 
 export const video = {
-  title: "Capturing emotion through the lens, frame by frame.",
+  title: ["Capturing emotion through", "the lens, frame by frame."],
   image: "/images/brand/editing.webp",
 };
 

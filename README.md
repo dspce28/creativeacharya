@@ -18,6 +18,10 @@ Deploys on Vercel with zero config — framework preset **Next.js**, no env vars
 
 Mirrors the Agenki template home page, section for section, rebuilt in React
 (no template code or demo images are used — the template is a paid ThemeForest item).
+Type sizes and animation timings were measured from the live template at 1440px:
+headings use League Gothic at 0.9x the template's Mango Grotesque sizes (same cap
+height and set width); reveals use the template's AOS settings (fade-up 100px, 1s,
+replay on scroll back) and its GSAP char/pin/scrub parameters.
 
 | Section | Effect |
 | --- | --- |

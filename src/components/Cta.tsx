@@ -3,38 +3,35 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 import { Chevrons } from "@/lib/icons";
-import { useFlair } from "./Btn";
+import Magnet from "./Magnet";
 
-// "LET'S WORK / TOGETHER" rows drift in opposite directions with scroll
-// (template .tw-cta-title-1 / -2), lime circle button in between.
+// Template CTA (custom-gsap.js #07): line 1 drifts 10% → -15%, line 2
+// -10% → 10%, scrubbed across the section.
 export default function Cta() {
   const root = useRef<HTMLElement>(null);
-  const flair = useFlair<HTMLAnchorElement>();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const st = { trigger: root.current, start: "top 100%", end: "bottom 20%", scrub: true, invalidateOnRefresh: true };
-      gsap.fromTo(".cta__row--1", { x: "10%" }, { x: "-15%", ease: "none", scrollTrigger: st });
-      gsap.fromTo(".cta__row--2", { x: "-10%" }, { x: "10%", ease: "none", scrollTrigger: st });
-      gsap.from(".cta__btn .view-circle", { scale: 0, rotation: -90, duration: 1, ease: "back.out(1.8)", scrollTrigger: { trigger: ".cta__btn", start: "top 90%" } });
+      gsap.fromTo(".cta-1", { x: "10%" }, { x: "-15%", ease: "none", scrollTrigger: st });
+      gsap.fromTo(".cta-2", { x: "-10%" }, { x: "10%", ease: "none", scrollTrigger: st });
     }, root);
     return () => ctx.revert();
   }, []);
 
   return (
-    <section className="cta pb-140 pt-140" ref={root}>
-      <div className="cta__row cta__row--1">Let’s Work</div>
-      <div className="cta__row cta__row--2">
-        <Chevrons className="cta__arrows" />
-        Together
-      </div>
-      <div className="cta__btn">
-        <a className="view-circle" href="#contact" onPointerEnter={flair.onPointerEnter} onPointerLeave={flair.onPointerLeave}>
-          <span className="flair" />
-          Book a
-          <br />
-          Shoot
-        </a>
+    <section className="cta" ref={root}>
+      <div className="container" style={{ position: "relative" }}>
+        <h3 className="cta-1">Let’s Work</h3>
+        <div className="cta__row2">
+          <Chevrons className="cta__arrows bounce-x" />
+          <h2 className="cta-2">Together</h2>
+        </div>
+        <div className="cta__btn">
+          <Magnet href="#contact" solid>
+            Book a Shoot
+          </Magnet>
+        </div>
       </div>
     </section>
   );

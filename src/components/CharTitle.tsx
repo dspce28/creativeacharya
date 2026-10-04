@@ -3,18 +3,17 @@
 import { useEffect, useRef } from "react";
 import { gsap, SplitText } from "@/lib/gsap";
 
-// Template "tw-char-animation": characters slide in from the right and fade
-// up when the title enters the viewport. Second line renders muted.
+// Template "tw-char-animation" (custom-gsap.js #01): on viewports > 768px,
+// chars slide in from x:100 with autoAlpha, 1s, 0.5s delay, 0.05s stagger,
+// triggered once at "top 90%".
 export default function CharTitle({
   lines,
   as: Tag = "h2",
   className = "",
-  dark = false,
 }: {
   lines: string[];
   as?: "h1" | "h2" | "h3";
   className?: string;
-  dark?: boolean;
 }) {
   const ref = useRef<HTMLHeadingElement>(null);
 
@@ -22,16 +21,15 @@ export default function CharTitle({
     const el = ref.current!;
     if (window.innerWidth <= 768) return;
     const ctx = gsap.context(() => {
-      const split = new SplitText(el.querySelectorAll(".ct-line"), { type: "words,chars" });
+      const split = new SplitText(el, { type: "chars, words" });
       gsap.set(el, { perspective: 300 });
       gsap.from(split.chars, {
+        duration: 1,
+        delay: 0.5,
         x: 100,
         autoAlpha: 0,
-        duration: 1,
-        delay: 0.2,
         stagger: 0.05,
-        ease: "power2.out",
-        scrollTrigger: { trigger: el, start: "top 90%", toggleActions: "play none none none" },
+        scrollTrigger: { trigger: el, start: "top 90%", end: "bottom 60%", toggleActions: "play none none none" },
       });
       return () => split.revert();
     }, el);
@@ -39,9 +37,9 @@ export default function CharTitle({
   }, []);
 
   return (
-    <Tag ref={ref} className={`sec-title ${dark ? "dark" : ""} ${className}`}>
+    <Tag ref={ref} className={`sec-title ${className}`}>
       {lines.map((l, i) => (
-        <span key={l} className={`ct-line ${i > 0 ? "fade" : ""}`} style={{ display: "block" }}>
+        <span key={i} className="ct-line">
           {l}
         </span>
       ))}

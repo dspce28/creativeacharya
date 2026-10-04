@@ -15,6 +15,7 @@ import Stories from "@/components/Stories";
 import Cta from "@/components/Cta";
 import Footer from "@/components/Footer";
 import BackTop from "@/components/BackTop";
+import Aos from "@/components/Aos";
 import { marquee } from "@/lib/content";
 
 // Section order mirrors the Agenki template home page.
@@ -40,6 +41,7 @@ export default function Home() {
       </main>
       <Footer />
       <BackTop />
+      <Aos />
     </>
   );
 }

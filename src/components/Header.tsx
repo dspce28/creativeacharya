@@ -37,6 +37,44 @@ export function Socials() {
   );
 }
 
+export function ContactList() {
+  return (
+    <ul className="info-list">
+      <li>
+        <span className="ico">
+          <Phone />
+        </span>
+        <div>
+          <small>Call Me</small>
+          <a href={site.phoneHref}>{site.phone}</a>
+        </div>
+      </li>
+      <li>
+        <span className="ico">
+          <Whatsapp />
+        </span>
+        <div>
+          <small>WhatsApp</small>
+          <a href={site.whatsapp} target="_blank" rel="noreferrer">
+            Chat on WhatsApp
+          </a>
+        </div>
+      </li>
+      <li>
+        <span className="ico">
+          <Mail />
+        </span>
+        <div>
+          <small>Make a Quote</small>
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </div>
+      </li>
+    </ul>
+  );
+}
+
+// Template header: transparent over the banner, becomes a blurred fixed bar
+// that slides down once the page has scrolled 260px (main.js #08).
 export default function Header() {
   const header = useRef<HTMLElement>(null);
   const [open, setOpen] = useState(false);
@@ -44,14 +82,8 @@ export default function Header() {
   const flair = useFlair<HTMLAnchorElement>();
 
   useEffect(() => {
-    let last = 0;
     const onScroll = () => {
-      const y = window.scrollY;
-      const h = header.current!;
-      h.classList.toggle("is-sticky", y > 60);
-      h.classList.toggle("is-hidden", y > last && y > 400);
-      last = y;
-      // highlight the section currently in view
+      header.current!.classList.toggle("fixed-header", window.scrollY >= 260);
       let cur = "#top";
       for (const n of nav) {
         const el = document.querySelector(n.href);
@@ -80,12 +112,11 @@ export default function Header() {
             <nav className="menu" aria-label="Primary">
               {nav.map((n) => (
                 <a key={n.href} href={n.href} className={active === n.href ? "is-active" : ""}>
-                  <span>{n.label}</span>
-                  <span aria-hidden>{n.label}</span>
+                  {n.label}
                 </a>
               ))}
             </nav>
-            <a className="social-dot" href={site.instagram} target="_blank" rel="noreferrer" aria-label="Instagram">
+            <a className="search-dot" href={site.instagram} target="_blank" rel="noreferrer" aria-label="Instagram">
               <Instagram />
             </a>
             <a className="header-btn" href="#contact" onPointerEnter={flair.onPointerEnter} onPointerLeave={flair.onPointerLeave}>
@@ -116,7 +147,6 @@ export default function Header() {
             </a>
           ))}
         </nav>
-        <p className="text-muted">Cinematic photography, videography and creative design that help brands and people express their true identity.</p>
         <div>
           <h4>Gallery</h4>
           <div className="offcanvas__gallery">
@@ -127,20 +157,7 @@ export default function Header() {
         </div>
         <div>
           <h4>Contact</h4>
-          <ul className="info-list">
-            <li>
-              <span className="ico">
-                <Phone />
-              </span>
-              <a href={site.phoneHref}>{site.phone}</a>
-            </li>
-            <li>
-              <span className="ico">
-                <Mail />
-              </span>
-              <a href={`mailto:${site.email}`}>{site.email}</a>
-            </li>
-          </ul>
+          <ContactList />
         </div>
         <Socials />
       </aside>

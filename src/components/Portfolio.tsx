@@ -4,58 +4,63 @@ import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 import { projects, site } from "@/lib/content";
 import { Chevrons } from "@/lib/icons";
-import Btn from "./Btn";
-import CharTitle from "./CharTitle";
 
+// Template portfolio: "PORTFOLIO / PROJECTS" header, then full-bleed image
+// panels that pin at 20% from the top and shrink to 0.8 as the stack scrolls
+// (custom-gsap.js #04: pin + scale .8, scrub 1, end at the panel area bottom).
 export default function Portfolio() {
-  const root = useRef<HTMLElement>(null);
+  const area = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const mm = gsap.matchMedia();
-    mm.add("(min-width: 901px)", () => {
-      // each card shrinks and dims as the next one slides over it
-      const panels = gsap.utils.toArray<HTMLElement>(".portfolio-panel", root.current);
-      panels.forEach((p, i) => {
-        const next = panels[i + 1];
-        if (!next) return;
-        gsap.to(p, {
-          scale: 0.86,
-          filter: "brightness(0.35)", // not opacity: cards must stay solid so the stack doesn't ghost
-          ease: "none",
-          scrollTrigger: { trigger: next, start: "top bottom", end: "top 110px", scrub: true },
-        });
+    mm.add("(min-width: 768px)", () => {
+      gsap.utils.toArray<HTMLElement>(".portfolio-panel", area.current).forEach((panel) => {
+        gsap.fromTo(
+          panel,
+          { scale: 1 },
+          {
+            scale: 0.8,
+            ease: "none",
+            scrollTrigger: { trigger: panel, start: "top 20%", endTrigger: area.current, end: "bottom 100%", scrub: 1 },
+          }
+        );
       });
     });
     return () => mm.revert();
   }, []);
 
   return (
-    <section className="portfolio pt-140" id="portfolio" ref={root}>
+    <section className="portfolio" id="portfolio">
       <div className="container">
-        <div className="portfolio__title">
-          <CharTitle lines={["Portfolio", "Projects"]} />
-          <Chevrons className="portfolio__arrow" />
+        <div className="portfolio__top">
+          <h3>Portfolio</h3>
+          <h2>Projects</h2>
+          <Chevrons className="portfolio__arrow bounce-x" />
         </div>
-
-        {projects.map((p, i) => (
-          <article className="portfolio-panel" key={p.title}>
-            <div>
-              <div className="portfolio-panel__no">#{i + 1}</div>
-              <div className="portfolio-panel__tags">
-                {p.tags.map((t) => (
-                  <span key={t}>{t}</span>
-                ))}
+        <div className="portfolio-area" ref={area}>
+          {projects.map((p, i) => (
+            <article className="portfolio-panel" key={p.title} data-cursor="View">
+              <div className="portfolio-panel__bg">
+                <img src={p.image} alt="" loading="lazy" />
               </div>
-              <h3>{p.title}</h3>
-              <Btn href={site.instagram} target="_blank" variant="outline" size="sm">
-                View Project
-              </Btn>
-            </div>
-            <div className="portfolio-panel__img">
-              <img src={p.image} alt={p.title} loading="lazy" />
-            </div>
-          </article>
-        ))}
+              <div>
+                <span className="portfolio-panel__no">#{i + 1}</span>
+              </div>
+              <div>
+                <div className="portfolio-panel__tags">
+                  {p.tags.map((t) => (
+                    <span key={t}>{t}</span>
+                  ))}
+                </div>
+                <h3>
+                  <a href={site.instagram} target="_blank" rel="noreferrer">
+                    {p.title}
+                  </a>
+                </h3>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

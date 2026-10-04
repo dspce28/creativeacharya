@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, Inter } from "next/font/google";
+import { League_Gothic, Inter } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/content";
 
-const anton = Anton({ subsets: ["latin"], weight: "400", variable: "--font-anton", display: "swap" });
+const league = League_Gothic({ subsets: ["latin"], variable: "--font-league", display: "swap" });
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 
 export const metadata: Metadata = {
@@ -26,7 +26,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${anton.variable} ${inter.variable}`}>
+    <html lang="en" className={`${league.variable} ${inter.variable}`}>
       <head>
         {/* Satoshi (Fontshare, free for commercial use) — the template's body font */}
         <link rel="preconnect" href="https://api.fontshare.com" />

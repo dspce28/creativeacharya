@@ -3,10 +3,9 @@
 import { useEffect, useRef } from "react";
 import { ArrowUp } from "@/lib/icons";
 
-const R = 24;
+const R = 25;
 const C = 2 * Math.PI * R;
 
-// Back-to-top button whose ring fills with scroll progress (template style).
 export default function BackTop() {
   const btn = useRef<HTMLAnchorElement>(null);
   const ring = useRef<SVGCircleElement>(null);

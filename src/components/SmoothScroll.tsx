@@ -14,7 +14,8 @@ declare global {
 export default function SmoothScroll() {
   useEffect(() => {
     if (prefersReducedMotion()) return;
-    const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
+    // ScrollSmoother "smooth: 2" in the template ≈ a heavy lerp here
+    const lenis = new Lenis({ lerp: 0.075, smoothWheel: true });
     window.__lenis = lenis;
     lenis.on("scroll", ScrollTrigger.update);
     const tick = (t: number) => lenis.raf(t * 1000);
@@ -30,7 +31,7 @@ export default function SmoothScroll() {
       const el = document.querySelector(id);
       if (!el) return;
       e.preventDefault();
-      lenis.scrollTo(el as HTMLElement, { offset: 0, duration: 1.6 });
+      lenis.scrollTo(el as HTMLElement, { offset: 0, duration: 1.5 });
     };
     document.addEventListener("click", onClick);
 

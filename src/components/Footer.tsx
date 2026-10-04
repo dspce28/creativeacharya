@@ -1,9 +1,8 @@
 "use client";
 
 import { nav, services, site } from "@/lib/content";
-import { Mail, Phone, Whatsapp } from "@/lib/icons";
 import Btn from "./Btn";
-import { Logo, Socials } from "./Header";
+import { ContactList, Logo, Socials } from "./Header";
 
 export default function Footer() {
   // No newsletter backend: the field opens a pre-filled email to Chirag.
@@ -17,21 +16,21 @@ export default function Footer() {
     <footer className="footer">
       <div className="container">
         <div className="footer__top">
-          <Logo />
-          <div className="footer__news">
-            <h3>Get updates on new shoots</h3>
+          <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+            <Logo />
+          </div>
+          <div className="footer__news" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+            <h4>Subscribe for new shoots &amp; availability</h4>
             <form onSubmit={subscribe}>
               <input name="email" type="email" placeholder="Email..." required aria-label="Email" />
-              <Btn type="submit" size="sm">
-                Subscribe
-              </Btn>
+              <Btn type="submit">Subscribe</Btn>
             </form>
-            <small>No spam — just new work and availability.</small>
+            <p>No spam — just new work and open dates.</p>
           </div>
         </div>
         <div className="footer__cols">
-          <div>
-            <h4>Services</h4>
+          <div data-aos="fade-up" data-aos-duration="200">
+            <h4>My Services</h4>
             <ul>
               {services.map((s) => (
                 <li key={s.title}>
@@ -40,7 +39,7 @@ export default function Footer() {
               ))}
             </ul>
           </div>
-          <div>
+          <div data-aos="fade-up" data-aos-duration="300">
             <h4>Quick Links</h4>
             <ul>
               {nav.map((n) => (
@@ -50,39 +49,8 @@ export default function Footer() {
               ))}
             </ul>
           </div>
-          <div className="footer__contact">
-            <h4>Get in Touch</h4>
-            <ul className="info-list">
-              <li>
-                <span className="ico">
-                  <Phone />
-                </span>
-                <div>
-                  <small>Call Me</small>
-                  <a href={site.phoneHref}>{site.phone}</a>
-                </div>
-              </li>
-              <li>
-                <span className="ico">
-                  <Whatsapp />
-                </span>
-                <div>
-                  <small>WhatsApp</small>
-                  <a href={site.whatsapp} target="_blank" rel="noreferrer">
-                    Chat with me
-                  </a>
-                </div>
-              </li>
-              <li>
-                <span className="ico">
-                  <Mail />
-                </span>
-                <div>
-                  <small>Email</small>
-                  <a href={`mailto:${site.email}`}>{site.email}</a>
-                </div>
-              </li>
-            </ul>
+          <div data-aos="fade-up" data-aos-duration="400">
+            <ContactList />
           </div>
         </div>
         <div className="footer__bottom">
